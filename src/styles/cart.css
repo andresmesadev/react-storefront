@@ -146,6 +146,12 @@
   background: rgba(37, 99, 235, 0.18);
 }
 
+.counter-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .quantityValue {
   min-width: 1.5rem;
   margin: 0;

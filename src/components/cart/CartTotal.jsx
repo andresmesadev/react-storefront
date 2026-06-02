@@ -2,17 +2,18 @@ import React from 'react'
 import useCart from "../../hooks/useCart";
 import "../../styles/cart.css";
 import { Link } from 'react-router-dom';
+import { getCartTotal } from "../../utils/cart";
 
 const CartTotal = () => {
     const {cart} = useCart();
+    const total = getCartTotal(cart);
 
-    const total =cart.reduce((acc,el) => acc + el.price * el.quanty , 0);
   return (
     <aside className="cartSummary">
         <h2>Resumen</h2>
         <p className="cartSummaryTotal">
           Total a pagar
-          <strong>$ {total}</strong>
+          <strong>$ {total.toFixed(2)}</strong>
         </p>
         <div className='cartTotal'>
           <div className="cartActions">

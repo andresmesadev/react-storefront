@@ -8,9 +8,16 @@ const normalizeProductImage = (image) => {
   );
 };
 
+const normalizeQuantity = (value) => {
+  const quantity = Number(value);
+  return Number.isFinite(quantity) && quantity >= 1 ? Math.floor(quantity) : 1;
+};
+
 const normalizeProduct = (product) => ({
   ...product,
-  image: normalizeProductImage(product.image)
+  image: normalizeProductImage(product.image),
+  price: Number(product.price) || 0,
+  quanty: normalizeQuantity(product.quanty),
 });
 
 export const getProducts = async (categoryName) => {
@@ -24,6 +31,10 @@ export const getProducts = async (categoryName) => {
 export const getProductById = async (id) => {
   const itemRef = doc(db, "items", id);
   const itemDoc = await getDoc(itemRef);
+
+  if (!itemDoc.exists()) {
+    return { id };
+  }
 
   return normalizeProduct({ ...itemDoc.data(), id: id });
 };

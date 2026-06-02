@@ -1,10 +1,11 @@
 import React from 'react'
 import useCart from "../../hooks/useCart";
+import { getCartItemCount } from "../../utils/cart";
 
 const TotalItems = () => {
     const {cart} = useCart();
+    const itemQuanty = getCartItemCount(cart);
 
-    const itemQuanty =cart.reduce((acc,el) => acc + el.quanty , 0);
   return (
     <span className='cart-items-total'>{itemQuanty}</span>
   )

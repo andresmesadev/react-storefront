@@ -4,6 +4,7 @@ import "../../styles/cart.css";
 import CartItemCounter from "./CartItemCounter";
 import React from 'react'
 import { HiOutlineTrash } from "react-icons/hi";
+import { getItemLineTotal } from "../../utils/cart";
 
 const CartElements = () => { 
   const {cart , setCart } = useCart();
@@ -32,7 +33,7 @@ const CartElements = () => {
                   <div className="cartItemBody">
                     <h3 className="cartItemTitle">{item.title}</h3>
                     <div className="cartItemMeta">
-                      <p className="cartItemPrice">$ {item.price * item.quanty}</p>
+                      <p className="cartItemPrice">$ {getItemLineTotal(item).toFixed(2)}</p>
                     </div>
                     <div className="cartItemActions">
                       <CartItemCounter item={item} />

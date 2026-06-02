@@ -2,16 +2,18 @@ import React from 'react'
 import useCart from "../../hooks/useCart";
 import useToast from "../../hooks/useToast";
 import { createOrder } from "../../services/orders";
+import { getCartTotal, sanitizeCart } from "../../utils/cart";
 import "../../styles/form.css"
 
 
 const CheckoutPage = () => {
 
-    const { cart } = useCart();
+    const { cart, clearCart } = useCart();
     const { showToast } = useToast();
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [submitError, setSubmitError] = React.useState("");
     const [submitSuccess, setSubmitSuccess] = React.useState(false);
+    const [orderId, setOrderId] = React.useState("");
 
 
     const storeOrder = async (e) => {
@@ -19,20 +21,30 @@ const CheckoutPage = () => {
 
         if (isSubmitting || submitSuccess) return;
 
+        const sanitizedCart = sanitizeCart(cart);
+
+        if (sanitizedCart.length === 0) {
+            setSubmitError("Tu carrito está vacío. Agrega productos antes de finalizar la compra.");
+            return;
+        }
+
         setIsSubmitting(true);
         setSubmitError("");
 
         const buyer = {
-            nombre: document.querySelector('#nombre').value,
-            direccion: document.querySelector('#direccion').value,
-            celular: document.querySelector('#celular').value,
-            correo: document.querySelector('#correo').value,
-            products: cart
+            nombre: document.querySelector('#nombre').value.trim(),
+            direccion: document.querySelector('#direccion').value.trim(),
+            celular: document.querySelector('#celular').value.trim(),
+            correo: document.querySelector('#correo').value.trim(),
+            products: sanitizedCart,
+            total: getCartTotal(sanitizedCart),
         }
 
         try {
-            await createOrder(buyer);
+            const order = await createOrder(buyer);
+            setOrderId(order.id);
             setSubmitSuccess(true);
+            clearCart();
             showToast("Pedido enviado correctamente.", "success");
         } catch {
             setSubmitError("No pudimos procesar tu pedido en este momento. Inténtalo nuevamente en unos minutos.");
@@ -54,6 +66,7 @@ const CheckoutPage = () => {
               <div className="statePanel statePanelSuccess" role="status" aria-live="polite">
                 <h2>Pedido enviado</h2>
                 <p>Recibimos tu información correctamente. Gracias por tu compra.</p>
+                <p>ID de orden: <strong>{orderId}</strong></p>
               </div>
             ) : (
             <form className='container-form' onSubmit={storeOrder} aria-busy={isSubmitting}>
@@ -82,7 +95,7 @@ const CheckoutPage = () => {
                 <button
                   className={`submitButton ${isSubmitting ? "buttonLoading" : ""}`}
                   type='submit'
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || cart.length === 0}
                   aria-busy={isSubmitting}
                 >
                   {isSubmitting ? (
