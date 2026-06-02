@@ -4,6 +4,7 @@ import HomePage from "./pages/Home"
 import ProductDetailPage from "./pages/ProductDetail"
 import { Navigate, Route, Routes } from "react-router-dom"
 import CartProvider from "./context/CartContext"
+import ToastProvider from "./context/ToastContext"
 import CartPage from "./pages/Cart"
 import CheckoutPage from "./pages/Checkout"
 
@@ -12,6 +13,7 @@ function App() {
   
   return (
     <>
+    <ToastProvider>
     <CartProvider>
       <NavBar icon="https://www.mattelsa.net/media/Home/LogoMattelsa.svg"/>
       <Routes>
@@ -23,6 +25,7 @@ function App() {
         <Route path="/formulario" element={<CheckoutPage/>}></Route>
       </Routes>
       </CartProvider>
+      </ToastProvider>
     </>
   )
 }

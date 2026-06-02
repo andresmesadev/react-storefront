@@ -16,11 +16,11 @@ const CartItemCounter = ({ item ,  }) => {
         setCart( [...cart] )
     }
   return (
-    <>
-    <h1 className='counter-button' onClick={decrese}><HiMinus/></h1>
-    <h3>{item.quanty}</h3>
-    <h1 className='counter-button' onClick={() => buyProducts(item)}><HiPlus/></h1>
-    </>
+    <div className="quantityControl">
+      <button type="button" className='counter-button' onClick={decrese} aria-label="Disminuir cantidad"><HiMinus/></button>
+      <p className="quantityValue">{item.quanty}</p>
+      <button type="button" className='counter-button' onClick={() => buyProducts(item)} aria-label="Aumentar cantidad"><HiPlus/></button>
+    </div>
   )
 }
 
