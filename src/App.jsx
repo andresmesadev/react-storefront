@@ -1,28 +1,28 @@
-import NavBar from "./components/Navbar/navbar"
-import ItemListContainer from "./components/ItemListContainer"
-import Home from "./components/Home"
-import ItemDetailContainer from "./components/ItemDetailContainer"
+import NavBar from "./components/layout/Navbar"
+import ProductList from "./components/products/ProductList"
+import HomePage from "./pages/Home"
+import ProductDetailPage from "./pages/ProductDetail"
 import { Navigate, Route, Routes } from "react-router-dom"
-import DataProvider from "./components/Context/DataContext"
-import CartContent from "./components/CartContent/CartContent"
-import Formulario from "./components/forms/formulario"
+import CartProvider from "./context/CartContext"
+import CartPage from "./pages/Cart"
+import CheckoutPage from "./pages/Checkout"
 
 
 function App() {
   
   return (
     <>
-    <DataProvider>
+    <CartProvider>
       <NavBar icon="https://www.mattelsa.net/media/Home/LogoMattelsa.svg"/>
       <Routes>
         <Route path="/" element={<Navigate to="/home" />}/>
-        <Route path="/home" element={<Home />} />
-        <Route path="/cart" element={<CartContent/>} />
-        <Route path="/category/:categoryName" element={<ItemListContainer/>}/>
-        <Route path="/item/:id" element={<ItemDetailContainer/>}/>
-        <Route path="/formulario" element={<Formulario/>}></Route>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/cart" element={<CartPage/>} />
+        <Route path="/category/:categoryName" element={<ProductList/>}/>
+        <Route path="/item/:id" element={<ProductDetailPage/>}/>
+        <Route path="/formulario" element={<CheckoutPage/>}></Route>
       </Routes>
-      </DataProvider>
+      </CartProvider>
     </>
   )
 }
